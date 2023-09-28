@@ -19,10 +19,6 @@ class ArtworksController < ApplicationController
         end
     end
 
-    def artwork_params
-        params.require(:artwork).permit(:title, :image_url, :artist_id)
-    end
-
     def create
         artwork = Artwork.new(artwork_params)
         if artwork.save
@@ -34,6 +30,11 @@ class ArtworksController < ApplicationController
 
     def destroy
         artwork = Artwork.find_by(id: params[:id])
-        
+
+    end
+
+    private
+    def artwork_params
+        params.require(:artwork).permit(:title, :image_url, :artist_id)
     end
 end
