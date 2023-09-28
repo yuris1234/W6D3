@@ -1,8 +1,12 @@
 class UsersController < ApplicationController
-    def index 
-        # render plain: "I'm in the index action!"
+    def index
+      if params.has_key?(:query)
+        user = User.find_by(username: params[:query])
+        render json: user
+      else
         users = User.all 
         render json: users
+      end
     end
 
     def create
