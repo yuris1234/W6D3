@@ -1544,3 +1544,184 @@ Completed 200 OK in 36ms (Views: 0.2ms | ActiveRecord: 14.6ms | Allocations: 220
 
 
   [1m[36mArtworkShare Load (0.9ms)[0m  [1m[34mSELECT "artwork_shares".* FROM "artwork_shares"[0m
+  [1m[36mArtworkShare Load (1.6ms)[0m  [1m[34mSELECT "artwork_shares".* FROM "artwork_shares"[0m
+  [1m[36mActiveRecord::SchemaMigration Pluck (1.9ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mUser Load (1.5ms)[0m  [1m[34mSELECT "users".* FROM "users"[0m
+  [1m[36mArtwork Load (1.7ms)[0m  [1m[34mSELECT "artworks".* FROM "artworks" WHERE "artworks"."artist_id" = $1[0m  [["artist_id", 1]]
+  [1m[36mArtworkShare Load (0.8ms)[0m  [1m[34mSELECT "artwork_shares".* FROM "artwork_shares" WHERE "artwork_shares"."artwork_id" = $1[0m  [["artwork_id", 1]]
+  [1m[36mArtworkShare Destroy (1.9ms)[0m  [1m[31mDELETE FROM "artwork_shares" WHERE "artwork_shares"."id" = $1[0m  [["id", 1]]
+  [1m[36mArtwork Destroy (1.7ms)[0m  [1m[31mDELETE FROM "artworks" WHERE "artworks"."id" = $1[0m  [["id", 1]]
+  [1m[36mArtworkShare Load (0.2ms)[0m  [1m[34mSELECT "artwork_shares".* FROM "artwork_shares" WHERE "artwork_shares"."viewer_id" = $1[0m  [["viewer_id", 1]]
+  [1m[36mUser Destroy (0.8ms)[0m  [1m[31mDELETE FROM "users" WHERE "users"."id" = $1[0m  [["id", 1]]
+  [1m[36mArtwork Load (0.2ms)[0m  [1m[34mSELECT "artworks".* FROM "artworks" WHERE "artworks"."artist_id" = $1[0m  [["artist_id", 2]]
+  [1m[36mArtworkShare Load (0.2ms)[0m  [1m[34mSELECT "artwork_shares".* FROM "artwork_shares" WHERE "artwork_shares"."viewer_id" = $1[0m  [["viewer_id", 2]]
+  [1m[36mUser Destroy (0.5ms)[0m  [1m[31mDELETE FROM "users" WHERE "users"."id" = $1[0m  [["id", 2]]
+  [1m[36mArtwork Load (0.1ms)[0m  [1m[34mSELECT "artworks".* FROM "artworks"[0m
+  [1m[36mArtworkShare Load (0.2ms)[0m  [1m[34mSELECT "artwork_shares".* FROM "artwork_shares"[0m
+  [1m[36mUser Exists? (0.4ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."username" = $1 LIMIT $2[0m  [["username", "yuri"], ["LIMIT", 1]]
+  [1m[36mUser Create (0.3ms)[0m  [1m[32mINSERT INTO "users" ("username", "created_at", "updated_at") VALUES ($1, $2, $3) RETURNING "id"[0m  [["username", "yuri"], ["created_at", "2023-09-28 15:20:30.386950"], ["updated_at", "2023-09-28 15:20:30.386950"]]
+  [1m[36mUser Exists? (0.1ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."username" = $1 LIMIT $2[0m  [["username", "spence"], ["LIMIT", 1]]
+  [1m[36mUser Create (0.1ms)[0m  [1m[32mINSERT INTO "users" ("username", "created_at", "updated_at") VALUES ($1, $2, $3) RETURNING "id"[0m  [["username", "spence"], ["created_at", "2023-09-28 15:20:30.389177"], ["updated_at", "2023-09-28 15:20:30.389177"]]
+  [1m[36mArtwork Create (0.9ms)[0m  [1m[32mINSERT INTO "artworks" ("title", "image_url", "artist_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["title", "Flowers"], ["image_url", "google.come/image/flower"], ["artist_id", 1], ["created_at", "2023-09-28 15:20:30.392086"], ["updated_at", "2023-09-28 15:20:30.392086"]]
+  [1m[36mArtworkShare Create (0.3ms)[0m  [1m[32mINSERT INTO "artwork_shares" ("artwork_id", "viewer_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"[0m  [["artwork_id", 1], ["viewer_id", 2], ["created_at", "2023-09-28 15:20:30.394774"], ["updated_at", "2023-09-28 15:20:30.394774"]]
+  [1m[36mTRANSACTION (0.8ms)[0m  [1m[35mCOMMIT[0m
+Started GET "/users/1/artworks" for ::1 at 2023-09-28 11:53:48 -0400
+  [1m[36mActiveRecord::SchemaMigration Pluck (1.7ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+Processing by ArtworksController#index as */*
+  Parameters: {"user_id"=>"1"}
+Completed 500 Internal Server Error in 10ms (ActiveRecord: 1.7ms | Allocations: 4682)
+
+
+  
+ActiveRecord::StatementInvalid (PG::UndefinedColumn: ERROR:  column artworks.user_id does not exist
+LINE 1: SELECT "artworks".* FROM "artworks" WHERE "artworks"."user_i...
+                                                  ^
+):
+  
+app/controllers/artworks_controller.rb:5:in `index'
+Started GET "/users/1/artworks" for ::1 at 2023-09-28 11:54:13 -0400
+Processing by ArtworksController#index as */*
+  Parameters: {"user_id"=>"1"}
+  [1m[36mArtwork Load (2.8ms)[0m  [1m[34mSELECT "artworks".* FROM "artworks"[0m
+  ↳ app/controllers/artworks_controller.rb:8:in `index'
+Completed 200 OK in 16ms (Views: 7.0ms | ActiveRecord: 7.3ms | Allocations: 6703)
+
+
+Started GET "/users/1/artworks" for ::1 at 2023-09-28 11:54:33 -0400
+Processing by ArtworksController#index as */*
+  Parameters: {"user_id"=>"1"}
+  [1m[36mArtwork Load (0.4ms)[0m  [1m[34mSELECT "artworks".* FROM "artworks"[0m
+  ↳ app/controllers/artworks_controller.rb:8:in `index'
+Completed 200 OK in 10ms (Views: 3.0ms | ActiveRecord: 5.8ms | Allocations: 4272)
+
+
+Started GET "/users/1/artworks" for ::1 at 2023-09-28 11:54:44 -0400
+Processing by ArtworksController#index as */*
+  Parameters: {"user_id"=>"1"}
+  [1m[36mArtwork Load (0.2ms)[0m  [1m[34mSELECT "artworks".* FROM "artworks"[0m
+  ↳ app/controllers/artworks_controller.rb:8:in `index'
+Completed 200 OK in 2ms (Views: 1.5ms | ActiveRecord: 0.2ms | Allocations: 797)
+
+
+Started GET "/users/1/artworks" for ::1 at 2023-09-28 11:54:58 -0400
+Processing by ArtworksController#index as */*
+  Parameters: {"user_id"=>"1"}
+  [1m[36mArtwork Load (0.4ms)[0m  [1m[34mSELECT "artworks".* FROM "artworks"[0m
+  ↳ app/controllers/artworks_controller.rb:8:in `index'
+Completed 200 OK in 8ms (Views: 3.0ms | ActiveRecord: 3.0ms | Allocations: 4272)
+
+
+Started GET "/users/1/artworks" for ::1 at 2023-09-28 11:55:07 -0400
+Processing by ArtworksController#index as */*
+  Parameters: {"user_id"=>"1"}
+  [1m[36mArtwork Load (0.3ms)[0m  [1m[34mSELECT "artworks".* FROM "artworks"[0m
+  ↳ app/controllers/artworks_controller.rb:8:in `index'
+Completed 200 OK in 8ms (Views: 2.8ms | ActiveRecord: 3.2ms | Allocations: 4272)
+
+
+Started GET "/users/1/artworks" for ::1 at 2023-09-28 11:55:26 -0400
+Processing by ArtworksController#index as */*
+  Parameters: {"user_id"=>"1"}
+Completed 200 OK in 2ms (Views: 0.1ms | ActiveRecord: 0.0ms | Allocations: 1649)
+
+
+Started GET "/users/1/artworks" for ::1 at 2023-09-28 11:55:45 -0400
+Processing by ArtworksController#index as */*
+  Parameters: {"user_id"=>"1"}
+  [1m[36mArtwork Load (0.3ms)[0m  [1m[34mSELECT "artworks".* FROM "artworks"[0m
+  ↳ app/controllers/artworks_controller.rb:8:in `index'
+Completed 200 OK in 10ms (Views: 2.7ms | ActiveRecord: 5.6ms | Allocations: 4280)
+
+
+Started GET "/users/1/artworks" for ::1 at 2023-09-28 11:56:42 -0400
+  [1m[36mActiveRecord::SchemaMigration Pluck (0.9ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+Processing by ArtworksController#index as */*
+  Parameters: {"user_id"=>"1"}
+Completed 200 OK in 5ms (Views: 0.2ms | ActiveRecord: 0.0ms | Allocations: 3232)
+
+
+Started GET "/users/1/artworks" for ::1 at 2023-09-28 11:57:45 -0400
+Processing by ArtworksController#index as */*
+  Parameters: {"user_id"=>"1"}
+Completed 200 OK in 6ms (Views: 0.1ms | ActiveRecord: 1.4ms | Allocations: 2767)
+
+
+Started GET "/users/1/artworks" for ::1 at 2023-09-28 11:57:54 -0400
+Processing by ArtworksController#index as */*
+  Parameters: {"user_id"=>"1"}
+  [1m[36mArtwork Load (2.1ms)[0m  [1m[34mSELECT "artworks".* FROM "artworks" WHERE "artworks"."artist_id" = $1[0m  [["artist_id", 1]]
+  ↳ app/controllers/artworks_controller.rb:5:in `index'
+Completed 200 OK in 16ms (Views: 5.9ms | ActiveRecord: 7.8ms | Allocations: 6961)
+
+
+Started POST "/artworks" for ::1 at 2023-09-28 11:59:23 -0400
+  [1m[36mActiveRecord::SchemaMigration Pluck (0.9ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+Processing by ArtworksController#create as */*
+  Parameters: {"artworks"=>{"title"=>"\"Hawaii\"", "artist_id"=>"2"}}
+Completed 400 Bad Request in 5ms (ActiveRecord: 0.0ms | Allocations: 2935)
+
+
+  
+ActionController::ParameterMissing (param is missing or the value is empty: artwork
+Did you mean?  artworks):
+  
+app/controllers/artworks_controller.rb:43:in `artwork_params'
+app/controllers/artworks_controller.rb:28:in `create'
+Started POST "/artworks" for ::1 at 2023-09-28 11:59:38 -0400
+Processing by ArtworksController#create as */*
+  Parameters: {"artwork"=>{"title"=>"\"Hawaii\"", "artist_id"=>"2"}}
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mBEGIN[0m
+  ↳ app/controllers/artworks_controller.rb:29:in `create'
+  [1m[36mUser Load (0.7ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 2], ["LIMIT", 1]]
+  ↳ app/controllers/artworks_controller.rb:29:in `create'
+  [1m[36mArtwork Create (0.8ms)[0m  [1m[32mINSERT INTO "artworks" ("title", "image_url", "artist_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["title", "\"Hawaii\""], ["image_url", nil], ["artist_id", 2], ["created_at", "2023-09-28 15:59:38.941035"], ["updated_at", "2023-09-28 15:59:38.941035"]]
+  ↳ app/controllers/artworks_controller.rb:29:in `create'
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[31mROLLBACK[0m
+  ↳ app/controllers/artworks_controller.rb:29:in `create'
+Completed 500 Internal Server Error in 43ms (ActiveRecord: 8.3ms | Allocations: 14682)
+
+
+  
+ActiveRecord::NotNullViolation (PG::NotNullViolation: ERROR:  null value in column "image_url" of relation "artworks" violates not-null constraint
+DETAIL:  Failing row contains (2, "Hawaii", null, 2, 2023-09-28 15:59:38.941035, 2023-09-28 15:59:38.941035).
+):
+  
+app/controllers/artworks_controller.rb:29:in `create'
+Started POST "/artworks" for ::1 at 2023-09-28 11:59:56 -0400
+Processing by ArtworksController#create as */*
+  Parameters: {"artwork"=>{"title"=>"\"Hawaii\"", "artist_id"=>"2", "image_url"=>"blah"}}
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+  ↳ app/controllers/artworks_controller.rb:29:in `create'
+  [1m[36mUser Load (0.3ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 2], ["LIMIT", 1]]
+  ↳ app/controllers/artworks_controller.rb:29:in `create'
+  [1m[36mArtwork Create (0.6ms)[0m  [1m[32mINSERT INTO "artworks" ("title", "image_url", "artist_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["title", "\"Hawaii\""], ["image_url", "blah"], ["artist_id", 2], ["created_at", "2023-09-28 15:59:56.390232"], ["updated_at", "2023-09-28 15:59:56.390232"]]
+  ↳ app/controllers/artworks_controller.rb:29:in `create'
+  [1m[36mTRANSACTION (0.6ms)[0m  [1m[35mCOMMIT[0m
+  ↳ app/controllers/artworks_controller.rb:29:in `create'
+Completed 200 OK in 9ms (Views: 0.9ms | ActiveRecord: 1.6ms | Allocations: 3265)
+
+
+Started GET "/users/1/artworks" for ::1 at 2023-09-28 12:00:41 -0400
+Processing by ArtworksController#index as */*
+  Parameters: {"user_id"=>"1"}
+  [1m[36mArtwork Load (0.5ms)[0m  [1m[34mSELECT "artworks".* FROM "artworks" WHERE "artworks"."artist_id" = $1[0m  [["artist_id", 1]]
+  ↳ app/controllers/artworks_controller.rb:5:in `index'
+Completed 200 OK in 4ms (Views: 2.5ms | ActiveRecord: 0.5ms | Allocations: 1197)
+
+
+Started GET "/users/2/artworks" for ::1 at 2023-09-28 12:00:47 -0400
+Processing by ArtworksController#index as */*
+  Parameters: {"user_id"=>"2"}
+  [1m[36mArtwork Load (0.4ms)[0m  [1m[34mSELECT "artworks".* FROM "artworks" WHERE "artworks"."artist_id" = $1[0m  [["artist_id", 2]]
+  ↳ app/controllers/artworks_controller.rb:5:in `index'
+Completed 200 OK in 4ms (Views: 3.2ms | ActiveRecord: 0.4ms | Allocations: 844)
+
+
+Started GET "/artworks" for ::1 at 2023-09-28 12:00:53 -0400
+Processing by ArtworksController#index as */*
+  [1m[36mArtwork Load (0.4ms)[0m  [1m[34mSELECT "artworks".* FROM "artworks"[0m
+  ↳ app/controllers/artworks_controller.rb:8:in `index'
+Completed 200 OK in 4ms (Views: 3.2ms | ActiveRecord: 0.4ms | Allocations: 894)
+
+
