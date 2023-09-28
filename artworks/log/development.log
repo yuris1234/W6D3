@@ -2162,3 +2162,430 @@ FOREIGN KEY ("liker_id")
   [1m[36mLike Load (0.4ms)[0m  [1m[34mSELECT "likes".* FROM "likes" WHERE "likes"."likeable_id" = $1 AND "likes"."likeable_type" = $2[0m  [["likeable_id", 1], ["likeable_type", "Comment"]]
   [1m[36mUser Load (0.3ms)[0m  [1m[34mSELECT "users".* FROM "users" ORDER BY "users"."id" ASC LIMIT $1[0m  [["LIMIT", 1]]
   [1m[36mLike Load (1.8ms)[0m  [1m[34mSELECT "likes".* FROM "likes" WHERE "likes"."liker_id" = $1[0m  [["liker_id", 1]]
+  [1m[36mActiveRecord::SchemaMigration Pluck (0.9ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[35m (0.2ms)[0m  [1m[34mSELECT pg_try_advisory_lock(7624278407833440675)[0m
+  [1m[36mActiveRecord::SchemaMigration Pluck (0.3ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+Migrating to CreateLikes (20230928182841)
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (7.5ms)[0m  [1m[35mCREATE TABLE "likes" ("id" bigserial primary key, "liker_id" bigint NOT NULL, "likeable_type" character varying NOT NULL, "likeable_id" bigint NOT NULL, "created_at" timestamp(6) NOT NULL, "updated_at" timestamp(6) NOT NULL, CONSTRAINT "fk_rails_ad8161ed3a"
+FOREIGN KEY ("liker_id")
+  REFERENCES "users" ("id")
+)[0m
+  [1m[35m (0.8ms)[0m  [1m[35mCREATE INDEX "index_likes_on_liker_id" ON "likes" ("liker_id")[0m
+  [1m[35m (0.7ms)[0m  [1m[35mCREATE INDEX "index_likes_on_likeable" ON "likes" ("likeable_type", "likeable_id")[0m
+  [1m[36mActiveRecord::SchemaMigration Create (0.3ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ($1) RETURNING "version"[0m  [["version", "20230928182841"]]
+  [1m[36mTRANSACTION (0.7ms)[0m  [1m[35mCOMMIT[0m
+  [1m[36mActiveRecord::InternalMetadata Load (0.6ms)[0m  [1m[34mSELECT "ar_internal_metadata".* FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = $1 LIMIT $2[0m  [["key", "environment"], ["LIMIT", 1]]
+  [1m[35m (0.2ms)[0m  [1m[34mSELECT pg_advisory_unlock(7624278407833440675)[0m
+  [1m[36mActiveRecord::SchemaMigration Pluck (0.6ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+Started GET "/likes" for ::1 at 2023-09-28 16:14:12 -0400
+  [1m[36mActiveRecord::SchemaMigration Pluck (0.5ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+Processing by LikesController#index as */*
+  [1m[36mLike Load (2.1ms)[0m  [1m[34mSELECT "likes".* FROM "likes"[0m
+  ↳ app/controllers/likes_controller.rb:23:in `index'
+Completed 200 OK in 5ms (Views: 0.5ms | ActiveRecord: 2.1ms | Allocations: 3166)
+
+
+Started POST "/likes" for ::1 at 2023-09-28 16:15:02 -0400
+Processing by LikesController#create as */*
+  Parameters: {"like"=>{"author_id"=>"1", "likeable_type"=>"comment", "likeable_id"=>"1"}}
+[31mUnpermitted parameter: :author_id. Context: { controller: LikesController, action: create, request: #<ActionDispatch::Request:0x0000000112c251b0>, params: {"like"=>{"author_id"=>"1", "likeable_type"=>"comment", "likeable_id"=>"1"}, "controller"=>"likes", "action"=>"create"} }[0m
+Completed 500 Internal Server Error in 31ms (ActiveRecord: 5.1ms | Allocations: 10036)
+
+
+  
+NameError (wrong constant name comment
+
+      Object.const_get(camel_cased_word)
+            ^^^^^^^^^^):
+  
+app/controllers/likes_controller.rb:4:in `create'
+  [1m[36mActiveRecord::SchemaMigration Pluck (0.9ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+Started POST "/likes" for ::1 at 2023-09-28 16:17:32 -0400
+  [1m[36mActiveRecord::SchemaMigration Pluck (1.3ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+Processing by LikesController#create as */*
+  Parameters: {"like"=>{"author_id"=>"1", "likeable_type"=>"comment", "likeable_id"=>"1"}}
+Completed 500 Internal Server Error in 11ms (ActiveRecord: 5.3ms | Allocations: 6879)
+
+
+  
+ActiveModel::UnknownAttributeError (unknown attribute 'author_id' for Like.
+
+          raise UnknownAttributeError.new(self, k.to_s)
+          ^^^^^):
+  
+app/controllers/likes_controller.rb:3:in `create'
+Started POST "/likes" for ::1 at 2023-09-28 16:18:22 -0400
+Processing by LikesController#create as */*
+  Parameters: {"like"=>{"liker_id"=>"1", "likeable_type"=>"comment", "likeable_id"=>"1"}}
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+  ↳ app/controllers/likes_controller.rb:4:in `create'
+  [1m[36mUser Load (0.7ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/controllers/likes_controller.rb:4:in `create'
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[31mROLLBACK[0m
+  ↳ app/controllers/likes_controller.rb:4:in `create'
+Completed 500 Internal Server Error in 26ms (ActiveRecord: 8.8ms | Allocations: 14630)
+
+
+  
+NameError (wrong constant name comment
+
+      Object.const_get(camel_cased_word)
+            ^^^^^^^^^^):
+  
+app/controllers/likes_controller.rb:4:in `create'
+Started POST "/likes" for ::1 at 2023-09-28 16:18:44 -0400
+Processing by LikesController#create as */*
+  Parameters: {"like"=>{"liker_id"=>"1", "likeable_type"=>"\"comment\"", "likeable_id"=>"1"}}
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+  ↳ app/controllers/likes_controller.rb:4:in `create'
+  [1m[36mUser Load (0.4ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/controllers/likes_controller.rb:4:in `create'
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[31mROLLBACK[0m
+  ↳ app/controllers/likes_controller.rb:4:in `create'
+Completed 500 Internal Server Error in 11ms (ActiveRecord: 0.7ms | Allocations: 3886)
+
+
+  
+NameError (wrong constant name "comment"
+
+      Object.const_get(camel_cased_word)
+            ^^^^^^^^^^):
+  
+app/controllers/likes_controller.rb:4:in `create'
+Started POST "/likes" for ::1 at 2023-09-28 16:27:27 -0400
+Processing by LikesController#create as */*
+  Parameters: {"like"=>{"liker_id"=>"1", "likeable_type"=>":comment", "likeable_id"=>"1"}}
+  [1m[36mTRANSACTION (0.4ms)[0m  [1m[35mBEGIN[0m
+  ↳ app/controllers/likes_controller.rb:4:in `create'
+  [1m[36mUser Load (0.5ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/controllers/likes_controller.rb:4:in `create'
+  [1m[36mTRANSACTION (0.9ms)[0m  [1m[31mROLLBACK[0m
+  ↳ app/controllers/likes_controller.rb:4:in `create'
+Completed 500 Internal Server Error in 36ms (ActiveRecord: 12.9ms | Allocations: 6770)
+
+
+  
+NameError (wrong constant name :comment
+
+      Object.const_get(camel_cased_word)
+            ^^^^^^^^^^):
+  
+app/controllers/likes_controller.rb:4:in `create'
+Started POST "/likes" for ::1 at 2023-09-28 16:27:34 -0400
+Processing by LikesController#create as */*
+  Parameters: {"like"=>{"liker_id"=>"1", "likeable_type"=>"comment", "likeable_id"=>"1"}}
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+  ↳ app/controllers/likes_controller.rb:4:in `create'
+  [1m[36mUser Load (1.2ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/controllers/likes_controller.rb:4:in `create'
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[31mROLLBACK[0m
+  ↳ app/controllers/likes_controller.rb:4:in `create'
+Completed 500 Internal Server Error in 11ms (ActiveRecord: 1.5ms | Allocations: 3753)
+
+
+  
+NameError (wrong constant name comment
+
+      Object.const_get(camel_cased_word)
+            ^^^^^^^^^^):
+  
+app/controllers/likes_controller.rb:4:in `create'
+Started POST "/likes" for ::1 at 2023-09-28 16:29:11 -0400
+Processing by LikesController#create as */*
+  Parameters: {"like"=>{"liker_id"=>"1", "likeable_type"=>"comment", "likeable_id"=>"1"}}
+  [1m[36mTRANSACTION (0.5ms)[0m  [1m[35mBEGIN[0m
+  ↳ (byebug):1:in `create'
+  [1m[36mUser Load (0.7ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ (byebug):1:in `create'
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[31mROLLBACK[0m
+  ↳ (byebug):1:in `create'
+Completed 500 Internal Server Error in 77619ms (ActiveRecord: 16.9ms | Allocations: 84272)
+
+
+  
+NameError (wrong constant name comment
+
+      Object.const_get(camel_cased_word)
+            ^^^^^^^^^^):
+  
+app/controllers/likes_controller.rb:5:in `create'
+Started POST "/likes" for ::1 at 2023-09-28 16:30:35 -0400
+Processing by LikesController#create as */*
+  Parameters: {"like"=>{"liker_id"=>"1", "likeable_type"=>"comment", "likeable_id"=>"1"}}
+  [1m[36mTRANSACTION (0.4ms)[0m  [1m[35mBEGIN[0m
+  ↳ (byebug):1:in `create'
+  [1m[36mLike Create (5.4ms)[0m  [1m[32mINSERT INTO "likes" ("liker_id", "likeable_type", "likeable_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["liker_id", 1], ["likeable_type", "comment"], ["likeable_id", 1], ["created_at", "2023-09-28 20:30:42.862839"], ["updated_at", "2023-09-28 20:30:42.862839"]]
+  ↳ (byebug):1:in `create'
+  [1m[36mTRANSACTION (0.9ms)[0m  [1m[35mCOMMIT[0m
+  ↳ (byebug):1:in `create'
+Completed 200 OK in 27557ms (Views: 0.7ms | ActiveRecord: 10.4ms | Allocations: 8141)
+
+
+Started POST "/likes" for ::1 at 2023-09-28 16:31:22 -0400
+Processing by LikesController#create as */*
+  Parameters: {"like"=>{"liker_id"=>"1", "likeable_type"=>"Comment", "likeable_id"=>"1"}}
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[35mBEGIN[0m
+  ↳ app/controllers/likes_controller.rb:5:in `create'
+  [1m[36mLike Create (1.3ms)[0m  [1m[32mINSERT INTO "likes" ("liker_id", "likeable_type", "likeable_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["liker_id", 1], ["likeable_type", "Comment"], ["likeable_id", 1], ["created_at", "2023-09-28 20:31:26.867770"], ["updated_at", "2023-09-28 20:31:26.867770"]]
+  ↳ app/controllers/likes_controller.rb:5:in `create'
+  [1m[36mTRANSACTION (1.1ms)[0m  [1m[35mCOMMIT[0m
+  ↳ app/controllers/likes_controller.rb:5:in `create'
+Completed 200 OK in 3951ms (Views: 0.4ms | ActiveRecord: 2.8ms | Allocations: 3711)
+
+
+Started POST "/likes" for ::1 at 2023-09-28 16:31:37 -0400
+Processing by LikesController#create as */*
+  Parameters: {"like"=>{"liker_id"=>"1", "likeable_type"=>"Comment", "likeable_id"=>"1"}}
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+  ↳ app/controllers/likes_controller.rb:5:in `create'
+  [1m[36mLike Create (0.4ms)[0m  [1m[32mINSERT INTO "likes" ("liker_id", "likeable_type", "likeable_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["liker_id", 1], ["likeable_type", "Comment"], ["likeable_id", 1], ["created_at", "2023-09-28 20:31:37.246705"], ["updated_at", "2023-09-28 20:31:37.246705"]]
+  ↳ app/controllers/likes_controller.rb:5:in `create'
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mCOMMIT[0m
+  ↳ app/controllers/likes_controller.rb:5:in `create'
+Completed 200 OK in 9ms (Views: 0.2ms | ActiveRecord: 5.2ms | Allocations: 4625)
+
+
+Started DELETE "/likes/3" for ::1 at 2023-09-28 16:31:55 -0400
+Processing by LikesController#destroy as */*
+  Parameters: {"like"=>{"liker_id"=>"1", "likeable_type"=>"Comment", "likeable_id"=>"1"}, "id"=>"3"}
+Completed 500 Internal Server Error in 21ms (ActiveRecord: 0.0ms | Allocations: 2602)
+
+
+  
+NoMethodError (undefined method `find_by' for #<LikesController:0x000000000104c8>
+
+        like = find_by(id: params[:id])
+               ^^^^^^^):
+  
+app/controllers/likes_controller.rb:13:in `destroy'
+Started POST "/likes" for ::1 at 2023-09-28 16:32:18 -0400
+Processing by LikesController#create as */*
+  Parameters: {"like"=>{"liker_id"=>"1", "likeable_type"=>"Comment", "likeable_id"=>"1"}}
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mBEGIN[0m
+  ↳ app/controllers/likes_controller.rb:4:in `create'
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/controllers/likes_controller.rb:4:in `create'
+  [1m[36mComment Load (1.6ms)[0m  [1m[34mSELECT "comments".* FROM "comments" WHERE "comments"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/controllers/likes_controller.rb:4:in `create'
+  [1m[36mLike Create (0.8ms)[0m  [1m[32mINSERT INTO "likes" ("liker_id", "likeable_type", "likeable_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["liker_id", 1], ["likeable_type", "Comment"], ["likeable_id", 1], ["created_at", "2023-09-28 20:32:19.076390"], ["updated_at", "2023-09-28 20:32:19.076390"]]
+  ↳ app/controllers/likes_controller.rb:4:in `create'
+  [1m[36mTRANSACTION (1.0ms)[0m  [1m[35mCOMMIT[0m
+  ↳ app/controllers/likes_controller.rb:4:in `create'
+Completed 200 OK in 31ms (Views: 0.2ms | ActiveRecord: 17.4ms | Allocations: 15205)
+
+
+Started DELETE "/likes/4" for ::1 at 2023-09-28 16:32:29 -0400
+Processing by LikesController#destroy as */*
+  Parameters: {"id"=>"4"}
+Completed 500 Internal Server Error in 21ms (ActiveRecord: 0.0ms | Allocations: 2565)
+
+
+  
+NoMethodError (undefined method `find_by' for #<LikesController:0x00000000012de0>
+
+        like = find_by(id: params[:id])
+               ^^^^^^^):
+  
+app/controllers/likes_controller.rb:12:in `destroy'
+Started DELETE "/likes/4" for ::1 at 2023-09-28 16:33:36 -0400
+Processing by LikesController#destroy as */*
+  Parameters: {"id"=>"4"}
+Completed 200 OK in 0ms (Views: 0.1ms | ActiveRecord: 0.0ms | Allocations: 209)
+
+
+Started DELETE "/likes/4" for ::1 at 2023-09-28 16:33:52 -0400
+Processing by LikesController#destroy as */*
+  Parameters: {"id"=>"4"}
+Completed 500 Internal Server Error in 10ms (ActiveRecord: 0.0ms | Allocations: 2575)
+
+
+  
+NoMethodError (undefined method `find_by' for #<LikesController:0x00000000017cc8>
+
+        like = find_by(id: params[:id])
+               ^^^^^^^):
+  
+app/controllers/likes_controller.rb:12:in `destroy'
+Started DELETE "/likes/4" for ::1 at 2023-09-28 16:34:04 -0400
+Processing by LikesController#destroy as */*
+  Parameters: {"id"=>"4"}
+  [1m[36mLike Load (0.2ms)[0m  [1m[34mSELECT "likes".* FROM "likes" WHERE "likes"."id" = $1 LIMIT $2[0m  [["id", 4], ["LIMIT", 1]]
+  ↳ app/controllers/likes_controller.rb:12:in `destroy'
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+  ↳ app/controllers/likes_controller.rb:13:in `destroy'
+  [1m[36mLike Destroy (10.1ms)[0m  [1m[31mDELETE FROM "likes" WHERE "likes"."id" = $1[0m  [["id", 4]]
+  ↳ app/controllers/likes_controller.rb:13:in `destroy'
+  [1m[36mTRANSACTION (0.6ms)[0m  [1m[35mCOMMIT[0m
+  ↳ app/controllers/likes_controller.rb:13:in `destroy'
+Completed 200 OK in 25ms (Views: 0.3ms | ActiveRecord: 19.7ms | Allocations: 5525)
+
+
+Started GET "/likes" for ::1 at 2023-09-28 16:34:13 -0400
+Processing by LikesController#index as */*
+  [1m[36mLike Load (0.3ms)[0m  [1m[34mSELECT "likes".* FROM "likes"[0m
+  ↳ app/controllers/likes_controller.rb:23:in `index'
+Completed 200 OK in 3ms (Views: 2.7ms | ActiveRecord: 0.3ms | Allocations: 1148)
+
+
+Started DELETE "/likes/1" for ::1 at 2023-09-28 16:34:23 -0400
+Processing by LikesController#destroy as */*
+  Parameters: {"id"=>"1"}
+  [1m[36mLike Load (0.8ms)[0m  [1m[34mSELECT "likes".* FROM "likes" WHERE "likes"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/controllers/likes_controller.rb:12:in `destroy'
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+  ↳ app/controllers/likes_controller.rb:13:in `destroy'
+  [1m[36mLike Destroy (0.3ms)[0m  [1m[31mDELETE FROM "likes" WHERE "likes"."id" = $1[0m  [["id", 1]]
+  ↳ app/controllers/likes_controller.rb:13:in `destroy'
+  [1m[36mTRANSACTION (0.6ms)[0m  [1m[35mCOMMIT[0m
+  ↳ app/controllers/likes_controller.rb:13:in `destroy'
+Completed 200 OK in 8ms (Views: 0.7ms | ActiveRecord: 1.8ms | Allocations: 2141)
+
+
+Started GET "/likes" for ::1 at 2023-09-28 16:34:28 -0400
+Processing by LikesController#index as */*
+  [1m[36mLike Load (0.3ms)[0m  [1m[34mSELECT "likes".* FROM "likes"[0m
+  ↳ app/controllers/likes_controller.rb:23:in `index'
+Completed 200 OK in 3ms (Views: 2.7ms | ActiveRecord: 0.3ms | Allocations: 877)
+
+
+Started POST "/likes" for ::1 at 2023-09-28 16:36:18 -0400
+Processing by LikesController#create as */*
+  Parameters: {"like"=>{"liker_id"=>"4", "likeable_type"=>"Comment", "likeable_id"=>"1"}}
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mBEGIN[0m
+  ↳ app/controllers/likes_controller.rb:4:in `create'
+  [1m[36mUser Load (1.0ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 4], ["LIMIT", 1]]
+  ↳ app/controllers/likes_controller.rb:4:in `create'
+  [1m[36mComment Load (0.3ms)[0m  [1m[34mSELECT "comments".* FROM "comments" WHERE "comments"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/controllers/likes_controller.rb:4:in `create'
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[31mROLLBACK[0m
+  ↳ app/controllers/likes_controller.rb:4:in `create'
+Completed 500 Internal Server Error in 41ms (ActiveRecord: 8.2ms | Allocations: 12169)
+
+
+  
+NoMethodError (undefined method `[]=' for 404:Integer
+
+            options[:partial] = action
+                   ^^^^^^^^^^^^
+Did you mean?  []):
+  
+app/controllers/likes_controller.rb:7:in `create'
+Started POST "/likes" for ::1 at 2023-09-28 16:36:23 -0400
+Processing by LikesController#create as */*
+  Parameters: {"like"=>{"liker_id"=>"2", "likeable_type"=>"Comment", "likeable_id"=>"1"}}
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mBEGIN[0m
+  ↳ app/controllers/likes_controller.rb:4:in `create'
+  [1m[36mUser Load (0.3ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 2], ["LIMIT", 1]]
+  ↳ app/controllers/likes_controller.rb:4:in `create'
+  [1m[36mComment Load (0.3ms)[0m  [1m[34mSELECT "comments".* FROM "comments" WHERE "comments"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/controllers/likes_controller.rb:4:in `create'
+  [1m[36mLike Create (0.9ms)[0m  [1m[32mINSERT INTO "likes" ("liker_id", "likeable_type", "likeable_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["liker_id", 2], ["likeable_type", "Comment"], ["likeable_id", 1], ["created_at", "2023-09-28 20:36:23.414471"], ["updated_at", "2023-09-28 20:36:23.414471"]]
+  ↳ app/controllers/likes_controller.rb:4:in `create'
+  [1m[36mTRANSACTION (0.6ms)[0m  [1m[35mCOMMIT[0m
+  ↳ app/controllers/likes_controller.rb:4:in `create'
+Completed 200 OK in 19ms (Views: 0.4ms | ActiveRecord: 2.5ms | Allocations: 4807)
+
+
+Started POST "/likes" for ::1 at 2023-09-28 16:36:36 -0400
+Processing by LikesController#create as */*
+  Parameters: {"like"=>{"liker_id"=>"2", "likeable_type"=>"Artwork", "likeable_id"=>"1"}}
+  [1m[36mTRANSACTION (0.9ms)[0m  [1m[35mBEGIN[0m
+  ↳ app/controllers/likes_controller.rb:4:in `create'
+  [1m[36mUser Load (0.3ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 2], ["LIMIT", 1]]
+  ↳ app/controllers/likes_controller.rb:4:in `create'
+  [1m[36mArtwork Load (0.8ms)[0m  [1m[34mSELECT "artworks".* FROM "artworks" WHERE "artworks"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/controllers/likes_controller.rb:4:in `create'
+  [1m[36mLike Create (0.5ms)[0m  [1m[32mINSERT INTO "likes" ("liker_id", "likeable_type", "likeable_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["liker_id", 2], ["likeable_type", "Artwork"], ["likeable_id", 1], ["created_at", "2023-09-28 20:36:36.183092"], ["updated_at", "2023-09-28 20:36:36.183092"]]
+  ↳ app/controllers/likes_controller.rb:4:in `create'
+  [1m[36mTRANSACTION (0.7ms)[0m  [1m[35mCOMMIT[0m
+  ↳ app/controllers/likes_controller.rb:4:in `create'
+Completed 200 OK in 32ms (Views: 0.4ms | ActiveRecord: 6.3ms | Allocations: 8880)
+
+
+Started GET "/likes" for ::1 at 2023-09-28 16:36:44 -0400
+Processing by LikesController#index as */*
+  [1m[36mLike Load (0.3ms)[0m  [1m[34mSELECT "likes".* FROM "likes"[0m
+  ↳ app/controllers/likes_controller.rb:23:in `index'
+Completed 200 OK in 6ms (Views: 5.3ms | ActiveRecord: 0.3ms | Allocations: 1064)
+
+
+Started GET "/likes" for ::1 at 2023-09-28 16:37:19 -0400
+Processing by LikesController#index as */*
+  [1m[36mLike Load (0.6ms)[0m  [1m[34mSELECT "likes".* FROM "likes"[0m
+  ↳ app/controllers/likes_controller.rb:23:in `index'
+Completed 200 OK in 6ms (Views: 4.7ms | ActiveRecord: 0.6ms | Allocations: 1056)
+
+
+Started GET "/likes/1" for ::1 at 2023-09-28 16:37:23 -0400
+  
+ActionController::RoutingError (No route matches [GET] "/likes/1"):
+  
+Started GET "/likes?query=1" for ::1 at 2023-09-28 16:37:34 -0400
+Processing by LikesController#index as */*
+  Parameters: {"query"=>"1"}
+  [1m[36mLike Load (0.5ms)[0m  [1m[34mSELECT "likes".* FROM "likes" WHERE "likes"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/controllers/likes_controller.rb:19:in `index'
+Completed 200 OK in 3ms (Views: 0.2ms | ActiveRecord: 0.5ms | Allocations: 666)
+
+
+Started GET "/likes?query=2" for ::1 at 2023-09-28 16:37:40 -0400
+Processing by LikesController#index as */*
+  Parameters: {"query"=>"2"}
+  [1m[36mLike Load (0.3ms)[0m  [1m[34mSELECT "likes".* FROM "likes" WHERE "likes"."id" = $1 LIMIT $2[0m  [["id", 2], ["LIMIT", 1]]
+  ↳ app/controllers/likes_controller.rb:19:in `index'
+Completed 200 OK in 5ms (Views: 2.2ms | ActiveRecord: 0.3ms | Allocations: 677)
+
+
+Started POST "/likes" for ::1 at 2023-09-28 16:37:55 -0400
+Processing by LikesController#create as */*
+  Parameters: {"like"=>{"liker_id"=>"2", "likeable_type"=>"Artwork", "likeable_id"=>"2"}}
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+  ↳ app/controllers/likes_controller.rb:4:in `create'
+  [1m[36mUser Load (0.4ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 2], ["LIMIT", 1]]
+  ↳ app/controllers/likes_controller.rb:4:in `create'
+  [1m[36mArtwork Load (0.5ms)[0m  [1m[34mSELECT "artworks".* FROM "artworks" WHERE "artworks"."id" = $1 LIMIT $2[0m  [["id", 2], ["LIMIT", 1]]
+  ↳ app/controllers/likes_controller.rb:4:in `create'
+  [1m[36mLike Create (1.2ms)[0m  [1m[32mINSERT INTO "likes" ("liker_id", "likeable_type", "likeable_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["liker_id", 2], ["likeable_type", "Artwork"], ["likeable_id", 2], ["created_at", "2023-09-28 20:37:55.457061"], ["updated_at", "2023-09-28 20:37:55.457061"]]
+  ↳ app/controllers/likes_controller.rb:4:in `create'
+  [1m[36mTRANSACTION (0.7ms)[0m  [1m[35mCOMMIT[0m
+  ↳ app/controllers/likes_controller.rb:4:in `create'
+Completed 200 OK in 16ms (Views: 0.2ms | ActiveRecord: 2.9ms | Allocations: 3848)
+
+
+Started GET "/likes?query=7" for ::1 at 2023-09-28 16:38:12 -0400
+Processing by LikesController#index as */*
+  Parameters: {"query"=>"7"}
+  [1m[36mLike Load (0.3ms)[0m  [1m[34mSELECT "likes".* FROM "likes" WHERE "likes"."id" = $1 LIMIT $2[0m  [["id", 7], ["LIMIT", 1]]
+  ↳ app/controllers/likes_controller.rb:19:in `index'
+Completed 200 OK in 2ms (Views: 0.4ms | ActiveRecord: 0.3ms | Allocations: 642)
+
+
+Started GET "/likes" for ::1 at 2023-09-28 16:38:18 -0400
+Processing by LikesController#index as */*
+  [1m[36mLike Load (0.8ms)[0m  [1m[34mSELECT "likes".* FROM "likes"[0m
+  ↳ app/controllers/likes_controller.rb:23:in `index'
+Completed 200 OK in 5ms (Views: 4.0ms | ActiveRecord: 0.8ms | Allocations: 1157)
+
+
+Started DELETE "/likes/7" for ::1 at 2023-09-28 16:38:33 -0400
+Processing by LikesController#destroy as */*
+  Parameters: {"id"=>"7"}
+  [1m[36mLike Load (0.3ms)[0m  [1m[34mSELECT "likes".* FROM "likes" WHERE "likes"."id" = $1 LIMIT $2[0m  [["id", 7], ["LIMIT", 1]]
+  ↳ app/controllers/likes_controller.rb:12:in `destroy'
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mBEGIN[0m
+  ↳ app/controllers/likes_controller.rb:13:in `destroy'
+  [1m[36mLike Destroy (0.3ms)[0m  [1m[31mDELETE FROM "likes" WHERE "likes"."id" = $1[0m  [["id", 7]]
+  ↳ app/controllers/likes_controller.rb:13:in `destroy'
+  [1m[36mTRANSACTION (0.6ms)[0m  [1m[35mCOMMIT[0m
+  ↳ app/controllers/likes_controller.rb:13:in `destroy'
+Completed 200 OK in 6ms (Views: 0.4ms | ActiveRecord: 1.3ms | Allocations: 2087)
+
+
+Started GET "/likes" for ::1 at 2023-09-28 16:38:38 -0400
+Processing by LikesController#index as */*
+  [1m[36mLike Load (0.3ms)[0m  [1m[34mSELECT "likes".* FROM "likes"[0m
+  ↳ app/controllers/likes_controller.rb:23:in `index'
+Completed 200 OK in 5ms (Views: 4.8ms | ActiveRecord: 0.3ms | Allocations: 1056)
+
+
